@@ -12,20 +12,17 @@ contract EscrowManagerTest is Test {
     DeployEscrowManager deployEscrowManager;
     IERC20 mnee;
     uint64 timeout = 60;
-    address alice = makeAddr("alice");
     address buyer = makeAddr("buyer");
     address seller = makeAddr("seller");
     address arbiter = makeAddr("arbiter");
     uint256 amount = 20e18;
     uint256 testAmount = 1e18;
-    uint256 startingBalance = 10 ether;
 
     function setUp() external {
         mnee = IERC20(0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF);
         deployEscrowManager = new DeployEscrowManager();
         escrowManager = deployEscrowManager.run();
         owner = escrowManager.I_OWNER();
-        vm.deal(alice, startingBalance);
         deal(0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF, buyer, amount);
     }
 

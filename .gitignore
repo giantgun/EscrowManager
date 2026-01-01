@@ -13,6 +13,10 @@ docs/
 # Dotenv file
 .env
 
+# dependencies
 dependencies/
 lib/
+
+# forge coverage
 coverage/
+broadcast/
