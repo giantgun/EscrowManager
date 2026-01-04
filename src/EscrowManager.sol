@@ -46,9 +46,9 @@ contract EscrowManager is ReentrancyGuard {
                                STORAGE
     //////////////////////////////////////////////////////////////*/
 
-    uint256 public constant PLATFORM_FEE_BPS = 10; // 0.1%
-    uint256 public constant ARBITER_FEE_BPS = 100; // 1%
-    uint256 public constant BPS_DENOMINATOR = 10_000;
+    uint256 private constant PLATFORM_FEE_BPS = 10; // 0.1%
+    uint256 private constant ARBITER_FEE_BPS = 100; // 1%
+    uint256 private constant BPS_DENOMINATOR = 10_000;
     address public immutable I_OWNER;
     IERC20 public immutable I_MNEE;
     uint256 public escrowCount;
