@@ -20,3 +20,4 @@ lib/
 # forge coverage
 coverage/
 broadcast/
+state.json
