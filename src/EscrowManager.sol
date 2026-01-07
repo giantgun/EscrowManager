@@ -121,7 +121,6 @@ contract EscrowManager is ReentrancyGuard {
         if (timeoutSeconds <= 0) revert InvalidInput();
         if (arbiter == seller) revert ArbiterCannotBeBuyerOrSeller();
         if (arbiter == msg.sender) revert ArbiterCannotBeBuyerOrSeller();
-        
 
         I_MNEE.safeTransferFrom(msg.sender, address(this), amount);
 
@@ -165,7 +164,12 @@ contract EscrowManager is ReentrancyGuard {
 
     function dispute(
         uint256 id
-    ) external onlyBuyer(id) inState(id, EscrowStatus.AWAITING_DELIVERY) {
+    )
+        external
+        nonReentrant
+        onlyBuyer(id)
+        inState(id, EscrowStatus.AWAITING_DELIVERY)
+    {
         escrows[id].status = EscrowStatus.DISPUTED;
         emit Disputed(id);
     }
