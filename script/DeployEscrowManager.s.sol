@@ -17,7 +17,7 @@ contract DeployEscrowManager is Script {
 
 contract DeployEscrowManagerToTestnet is Script {
     function run() external returns (EscrowManager) {
-        address mneeAddress = vm.envAddress("MNEE_TESTNET_ADDRESS"); //0x4752d00551699858899161607FFF9D24804CA86c
+        address mneeAddress = vm.envAddress("MNEE_TESTNET_ADDRESS"); //0xc387Eed7806EBaca48335d859aE8D2F122aEFD54
         vm.startBroadcast();
         EscrowManager escrowManager = new EscrowManager(mneeAddress);
         vm.stopBroadcast();

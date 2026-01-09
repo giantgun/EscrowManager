@@ -15,10 +15,10 @@ fund-dev-accounts: impersonate-whale
 setup-env-wsl:
 	sudo apt install dos2unix
 	dos2unix .env
-	export $(grep -v '^#' .env | xargs)
+	export $(cat .env | xargs)
 
 load-env:
-	export $(grep -v '^#' .env | xargs)
+	export $(cat .env | xargs)
 
 deploy-to-testnet: load-env
 	forge script script/DeployEscrowManager.s.sol --tc DeployEscrowManagerToTestnet  --rpc-url "$(SEPOLIA_RPC_URL)" --broadcast --account "$(SECURE_WALLET_NAME)" --sender "$(SECURE_WALLET_PUBLIC_ADDRESS)"
