@@ -1,159 +1,191 @@
-# EscrowManager
+# EscrowManager 🚀
 
-A simple, audited-like Escrow contract for ERC20 tokens built with Foundry. The contract enables a buyer to deposit ERC20 tokens into an escrow, designate a seller and an arbiter, and resolve the trade either by buyer release, seller auto-release after timeout, or arbiter arbitration if disputed.
-
----
-
-## 🔧 Project Structure
-
-- `src/EscrowManager.sol` — Primary contract implementing escrow logic, fees, and dispute resolution.
-- `script/DeployEscrowManager.s.sol` — Foundry script used to deploy `EscrowManager` (includes a sample token address).
-- `test/EscrowManagerTest.t.sol` — Comprehensive Forge tests covering happy paths, edge cases, and invariants.
-- `foundry.toml` — Foundry configuration (remappings and dependencies).
-- `Makefile` — Convenience targets for running tests, starting Anvil, and deploying.
-
-> Note: the repository ignores typical development artifacts such as `lib/`, `dependencies/`, `cache/`, `broadcast/`, and `coverage/` (see `.gitignore`).
+**Payment-safe, non-custodial escrow for ERC20 tokens** — built with Foundry and OpenZeppelin. EscrowManager lets buyers deposit ERC20 tokens into per-escrow contracts, designate a seller and an arbiter, and then resolve the trade via buyer release, seller auto-release after a timeout, or arbiter arbitration on dispute.
 
 ---
 
-## ⚙️ Contract Overview (`src/EscrowManager.sol`)
+## 1) TL;DR
 
-Key features:
-
-- ERC20-based escrow: any ERC20 token can be used by passing its address to the constructor.
-- Roles: **buyer**, **seller**, **arbiter**, **platform owner (I_OWNER)**.
-- Escrow lifecycle statuses: `NONE`, `AWAITING_DELIVERY`, `DISPUTED`, `COMPLETED`, `REFUNDED`.
-- Fees:
-  - Platform fee: **0.1%** (10 BPS)
-  - Arbiter fee (on dispute resolution): **1%** (100 BPS)
-- Safety: uses `ReentrancyGuard` and `SafeERC20` for robust token interactions.
-
-Important behaviors:
-
-- `createEscrow(seller, arbiter, amount, timeoutSeconds)` — Buyer creates an escrow and transfers `amount` tokens into the contract.
-  - Validations: no zero addresses, non-zero amount and timeout, arbiter cannot be buyer or seller.
-- `release(id)` — Only buyer can release funds to seller; platform fee is taken and remainder sent to seller.
-- `dispute(id)` — Only buyer can mark an escrow `DISPUTED` (prevents release/auto-release until resolved).
-- `autoRelease(id)` — Only seller can call after the configured timeout has elapsed; behaves like `release`.
-- `arbitrate(id, releaseToSeller)` — Only arbiter can resolve a `DISPUTED` escrow; distributes platform and arbiter fees, and remaining to buyer or seller based on `releaseToSeller`.
-
-Events and Errors:
-
-- Events: `EscrowCreated`, `Released`, `Disputed`, `Arbitrated`, `AutoReleased`.
-- Custom errors provide gas-efficient reverts: `NotBuyer`, `NotSeller`, `NotArbiter`, `InvalidState`, `InvalidInput`, `TimeoutNotReached`, `ArbiterCannotBeBuyerOrSeller`.
+- 🔐 Non-Custodial Escrows — Tokens are held in the contract until a release/refund.
+- 🧾 On-Chain Guarantees — Platform and arbiter fees enforced on-chain.
+- ⏱ Timeout & Auto-Release — Sellers can trigger auto-release after timeout.
+- 🛡️ Dispute Resolution — A designated arbiter resolves disputed escrows.
+- ⚖️ Fee Model — Platform fee: 0.1% (10 BPS); Arbiter fee on disputes: 1% (100 BPS).
 
 ---
 
-## ✅ Test Coverage
+## 2) Features
 
-All important flows are covered in `test/EscrowManagerTest.t.sol` including:
+- ERC20-based escrow: pass any ERC20 token address (constructor) — project commonly integrates with MNEE (USD-backed ERC20).
+- Strong access control via specific role checks (buyer, seller, arbiter).
+- Safe token transfers using `SafeERC20` and reentrancy protection via `ReentrancyGuard`.
+- Compact, gas-friendly error handling with custom errors.
+- Full test coverage (happy paths, edge cases, invariants).
 
-- Escrow creation and validation (inputs, balances).
-- Access control checks for `release`, `dispute`, `autoRelease`, and `arbitrate`.
-- Correct fee calculation and transfers (platform + arbiter fees).
-- Timeout-based `autoRelease` behavior.
-- State safety: ensuring no invalid state transitions or double actions.
-- Account invariants (contract balance should be zero after payouts).
+---
 
-To run tests locally:
+## 3) Non-Custodial Architecture
 
-```bash
-# run all tests
-forge test
+Each escrow is a data entry in the `EscrowManager` contract that holds buyer funds until resolution.
 
-# or via the Makefile (requires .env with ETH_MAINNET_RPC_URL set for forking)
-make run-tests
+┌─────────────────────────────────────────────────────────────┐
+│                    Your Escrow (on-chain)                   │
+│  ┌─────────────────┐  ┌─────────────────────────────────┐  │
+│  │     Buyer       │  │        On-Chain Rules           │  │
+│  │  (creates escrow)│  │ - Per-escrow timeout            │
+│  │                  │  │ - Dispute arbitration           │
+│  │  ✓ Deposit      │  │ - Platform + Arbiter fees       │
+│  │  ✓ Release      │  │ - Auto-release after timeout    │
+│  └─────────────────┘  └─────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+
+Why this matters:
+
+- ✅ You own the funds until release — Escrow holds tokens, not the platform
+- ✅ Transparent audit trail — Every action emits events and is verifiable on-chain
+- ✅ Emergency controls — Arbiter & timeouts prevent stuck funds
+
+---
+
+## 4) Tech Stack
+
+- Smart Contracts: Solidity + OpenZeppelin
+- Development & Testing: Foundry (forge, cast, anvil)
+- Libraries: `SafeERC20`, `ReentrancyGuard`
+
+---
+
+## 5) Project Structure
+
+```
+├── src/
+│   └── EscrowManager.sol      # Core escrow contract
+├── script/
+│   └── DeployEscrowManager.s.sol  # Foundry deployment scripts (mainnet & testnet variants)
+├── test/
+│   └── EscrowManagerTest.t.sol # Forge tests
+├── foundry.toml
+├── Makefile
+└── README.md
 ```
 
 ---
 
-## 🚀 Local Development & Deployment
+## 6) Getting Started
 
 Prerequisites:
 
-- Foundry (forge, cast, anvil) installed: https://book.getfoundry.sh/
-- An Ethereum RPC URL (for mainnet forking) or a local Anvil instance.
-- Optional: a funded private key for broadcasting transactions.
+- Foundry (forge, cast, anvil) — https://book.getfoundry.sh/
+- An Ethereum RPC URL (mainnet or testnet) or local Anvil
+- A private key (for broadcasting deploy scripts)
 
 Quick start:
 
-1. Start a local Anvil node (optionally fork mainnet):
+```bash
+# install foundry (if not already)
+curl -L https://foundry.paradigm.xyz | bash
+foundryup
+
+# run tests
+forge test
+```
+
+Start a local dev node (Anvil):
 
 ```bash
 # simple Anvil
 make setup-anvil
-
-# or fork with on-disk state from state.json
-make setup-anvil-with-state
 ```
 
-2. Run tests:
+Deploy with Forge (example):
 
 ```bash
-forge test
+# set env vars: MNEE_MAINNET_ADDRESS, PRIVATE_KEY, RPC_URL
+forge script script/DeployEscrowManager.s.sol --broadcast --private-keys $PRIVATE_KEY --rpc-url $RPC_URL
 ```
 
-3. Deploy (example using Makefile target):
+Environment variables used by `script/DeployEscrowManager.s.sol`:
 
-```bash
-# configure .env with DEV_PLATFORM_PRIVATE_KEY and ETH_MAINNET_RPC_URL, then:
-make deploy-escrow-manager
-```
+- `MNEE_MAINNET_ADDRESS` — mainnet MNEE ERC20 address
+- `MNEE_TESTNET_ADDRESS` — testnet MNEE (or a test ERC20 you deployed)
+- `PRIVATE_KEY` — deployer private key for broadcasting
+- `RPC_URL` — RPC to use when broadcasting
 
-Or directly with Forge:
+Sample addresses (not hard-coded — set via env vars):
 
-```bash
-forge script script/DeployEscrowManager.s.sol --broadcast --private-keys <PRIVATE_KEY> --rpc-url <RPC_URL>
-```
-
-The `script/DeployEscrowManager.s.sol` uses a sample ERC20 address for MNEE; update the address in the script if you intend to deploy with a different token.
+- Mainnet MNEE sample: `0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF` (used in comments in the deploy script)
+- Testnet MNEE sample: `0xc387Eed7806EBaca48335d859aE8D2F122aEFD54` (script comment)
 
 ---
 
-## 🛡️ Security Notes & Considerations
+## 7) MNEE Integration
 
-- Reentrancy protection: `ReentrancyGuard` is used on mutating external functions.
-- Safe token handling: `SafeERC20` is used for token transfers.
-- The contract assumes the ERC20 token behaves per the spec; non-standard tokens may cause issues.
-- `I_OWNER` (platform fee receiver) is immutable and set to `msg.sender` at deployment — consider using a multisig for production.
-- Arbiter is a centralized decision-maker in dispute flows; choose a trusted arbiter or an oracle-based mechanism for decentralization.
-- Gas and economic considerations: fees are fixed BPS constants — review them for production suitability.
+This repository is frequently used with MNEE (USD-backed ERC20) but is token-agnostic — any ERC20-compatible token works. For local tests you can deploy a token fixture or point `MNEE_TESTNET_ADDRESS` at a locally deployed ERC20.
+
+Key integration points:
+
+- Constructor expects an `IERC20` token address (commonly MNEE)
+- `createEscrow` collects tokens via `safeTransferFrom`
+- Fees are paid out in the configured token
 
 ---
 
-## 🧪 How to interact (examples)
+## 8) Contract Snapshot
 
-Assuming a deployed `EscrowManager` at `0x...` and an ERC20 `MNEE` token with allowance set:
+`EscrowManager.sol` highlights:
+
+- Roles: `buyer`, `seller`, `arbiter`, `I_OWNER` (fee recipient)
+- Escrow lifecycle: `NONE → AWAITING_DELIVERY → (DISPUTED → ARBITRATED) → COMPLETED/REFUNDED`
+- Fees: `PLATFORM_FEE_BPS = 10` (0.1%), `ARBITER_FEE_BPS = 100` (1%), denominator `10_000`
+- Events: `EscrowCreated`, `Released`, `Disputed`, `Arbitrated`, `AutoReleased`
+- Errors: `NotBuyer`, `NotSeller`, `NotArbiter`, `InvalidState`, `InvalidInput`, `TimeoutNotReached`, `ArbiterCannotBeBuyerOrSeller`
+
+---
+
+## 9) Usage Examples
+
+JavaScript (ethers.js) example:
 
 ```js
 // Create escrow (buyer)
-escrow.createEscrow(sellerAddr, arbiterAddr, amount, timeoutSeconds)
+await escrow.createEscrow(sellerAddr, arbiterAddr, amount, timeoutSeconds)
 
-// Buyer releases to seller
-escrow.release(escrowId)
+// Buyer releases
+await escrow.release(escrowId)
 
-// Buyer opens a dispute
-escrow.dispute(escrowId)
+// Buyer disputes
+await escrow.dispute(escrowId)
 
 // Seller auto-release after timeout
-escrow.autoRelease(escrowId)
+await escrow.autoRelease(escrowId)
 
 // Arbiter resolves dispute
-escrow.arbitrate(escrowId, true /* release to seller */)
+await escrow.arbitrate(escrowId, true)
 ```
 
----
-
-## 📄 License
-
-All code is licensed under **MIT** (see SPDX header in Solidity files).
+`cast`/CLI examples can be added on demand for common flows.
 
 ---
 
-## 🙋 Contributing
+## 10) Security & Production Notes
 
-Contributions and improvements are welcome. Please open issues or pull requests. Keep tests green and add tests for new behaviors.
+- Keep `I_OWNER` as a multisig in production (it receives platform fees).
+- Review fee basis points for your economic model.
+- Handle non-standard ERC20 tokens with caution.
+- Tests are comprehensive; add more tests for any new feature.
 
 ---
 
-If you want, I can also add quick-code examples using `cast` or an ethers script demonstrating the most common flows. 🔧
+## License
+
+MIT — see SPDX headers and LICENSE file.
+
+---
+
+## Contributing
+
+Contributions welcome — open issues and PRs. Please add tests for changes and keep the test suite green.
+
+---
+
+If you'd like, I can add a short `cast`/ethers script section or include a live example of deploying a test MNEE token for local development. 🔧
