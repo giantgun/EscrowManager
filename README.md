@@ -113,7 +113,7 @@ Environment variables used by `script/DeployEscrowManager.s.sol`:
 
 Sample addresses (not hard-coded — set via env vars):
 
-- Mainnet MNEE sample: `0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF` (used in comments in the deploy script)
+- Mainnet MNEE : `0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF` (used in comments in the deploy script)
 - Testnet MNEE sample: `0xc387Eed7806EBaca48335d859aE8D2F122aEFD54` (script comment)
 
 ---
