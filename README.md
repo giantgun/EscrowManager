@@ -228,7 +228,7 @@ make setup-anvil-with-state
 make impersonate-whale
 make fund-dev-accounts
 
-# run tests (optionally using the fork)
+# run tests (runs test using the mainnet fork)
 make run-tests
 ```
 
@@ -354,5 +354,5 @@ CLI / Makefile convenience:
 
 ## License
 
-This repository is licensed under the MIT License. See the `LICENSE` file for the full license text and attribution requirements. The source files include SPDX license headers (where applicable) — please retain them when modifying or redistributing this code.
+This repository is licensed under the MIT License. See the `LICENSE` file for the full license text and attribution requirements. The source files include SPDX license headers (where applicable), please retain them when modifying or redistributing this code.
 
