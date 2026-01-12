@@ -118,12 +118,12 @@ Prereqs:
 
 - Windows Subsystem for Linux(WSL), for windows users
 - Foundry (forge, cast, anvil) see https://book.getfoundry.sh/
-```bash
-# run this in terminal after installing foundry tool chain
-git clone https://github.com/giantgun/EscrowManager
-cd EscrowManager
-forge install
-```
+    ```bash
+    # run this in terminal after installing foundry tool chain
+    git clone https://github.com/giantgun/EscrowManager
+    cd EscrowManager
+    forge install
+    ```
 - A mainnet RPC (Infura/Alchemy) for forking; export as `ETH_MAINNET_RPC_URL`
 - Make installed(You can copy commands directly from Makefile)
 
@@ -179,12 +179,12 @@ Prereqs:
 
 - Windows Subsystem for Linux(WSL), for windows users
 - Foundry (forge, cast, anvil), see https://book.getfoundry.sh/
-```bash
-# run this in terminal after installing foundry tool chain
-git clone https://github.com/giantgun/EscrowManager
-cd EscrowManager
-forge install
-```
+    ```bash
+    # run this in terminal after installing foundry tool chain
+    git clone https://github.com/giantgun/EscrowManager
+    cd EscrowManager
+    forge install
+    ```
 - A mainnet RPC (Infura/Alchemy) for forking; export as `ETH_MAINNET_RPC_URL`
 - Make installed(You can copy commands directly from Makefile)
 
