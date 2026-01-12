@@ -128,12 +128,12 @@ forge install
 - Make installed(You can copy commands directly from Makefile)
 
 
-Wallet setup (secure deployments using `cast`/`forge`):
-- Never store private keys or mnemonics holding real funds, as plain text in a .env file.
-- To import a prefunded wallet and use the `SECURE_WALLET_NAME` .env variable, used by Makefile deploy targets run:
-```bash 
-cast wallet import <YOUR_SECURE_WALLET_NAME> --interactive
-```
+- Wallet setup (secure deployments using `cast`/`forge`):
+    - Never store private keys or mnemonics holding real funds, as plain text in a .env file.
+    - To import a prefunded wallet and use the `SECURE_WALLET_NAME` .env variable, used by Makefile deploy targets run:
+    ```bash 
+    cast wallet import <YOUR_SECURE_WALLET_NAME> --interactive
+    ```
 
 For Testnet deployment (`DeployEscrowManagerToTestnet`):
 
@@ -209,9 +209,9 @@ Important `.env` variables used in Makefile/scripts (development & deployments):
 Security notes:
 - Never store private keys or mnemonics holding real funds, as plain text in a .env file.
 - To import a prefunded wallet and use the `SECURE_WALLET_NAME` .env variable, used by Makefile deploy targets run:
-```bash 
-cast wallet import <YOUR_SECURE_WALLET_NAME> --interactive
-```
+    ```bash 
+    cast wallet import <YOUR_SECURE_WALLET_NAME> --interactive
+    ```
  
 
 Quick helpers:
