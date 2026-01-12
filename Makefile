@@ -20,8 +20,11 @@ setup-env-wsl:
 load-env:
 	export $(cat .env | xargs)
 
-deploy-to-testnet: load-env
+deploy-escrow-to-testnet: load-env
 	forge script script/DeployEscrowManager.s.sol --tc DeployEscrowManagerToTestnet  --rpc-url "$(SEPOLIA_RPC_URL)" --broadcast --account "$(SECURE_WALLET_NAME)" --sender "$(SECURE_WALLET_PUBLIC_ADDRESS)"
 
-deploy-to-mainnet: load-env
+deploy-escrow-to-mainnet: load-env
 	forge script script/DeployEscrowManager.s.sol --tc DeployEscrowManager --rpc-url "$(ETH_MAINNET_RPC_URL)" --broadcast --account "$(SECURE_WALLET_NAME)" --sender "$(SECURE_WALLET_PUBLIC_ADDRESS)"
+
+deploy-mock-mnee-to-testnet: load-env
+	forge script script/DeployMockMNEE.s.sol --rpc-url "$(SEPOLIA_RPC_URL)" --broadcast --account "$(SECURE_WALLET_NAME)" --sender "$(SECURE_WALLET_PUBLIC_ADDRESS)"
