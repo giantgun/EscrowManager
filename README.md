@@ -192,7 +192,7 @@ Important `.env` variables used in Makefile/scripts (development & deployments):
 
 - `ETH_MAINNET_RPC_URL` : mainnet RPC URL used for forking and mainnet broadcast (e.g. Infura/Alchemy)
 - `SEPOLIA_RPC_URL` : Sepolia / testnet RPC URL used for testnet deploys
-- `DEV_PLATFORM_PRIVATE_KEY` : (local dev) private key for the dev platform account (do NOT commit this)
+- `DEV_PLATFORM_PRIVATE_KEY` : (local dev) private key for the dev platform account (not real funds)
 - `DEV_MNEMONIC` : mnemonic used for anvil/fork account generation (local dev)
 - `DEV_WHALE` : an address with large MNEE balance used for impersonation/funding on a fork
 - `DEV_BUYER_PUBLIC_KEY` : public address used as the buyer in local tests
