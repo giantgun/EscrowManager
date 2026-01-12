@@ -4,6 +4,21 @@
 
 **EscrowManager is a simple, non‑custodial escrow contract built to work seamlessly with the MNEE USD‑backed ERC20 (or any ERC20 token).** This repository includes mainnet-friendly scripts and facilities for working with MNEE in development, testing and production.
 
+## Table of Contents
+
+- [TL;DR](#tldr)
+- [Features](#2-features)
+- [Non-Custodial Architecture](#3-non-custodial-architecture)
+- [Tech Stack](#4-tech-stack)
+- [Project Structure](#5-project-structure)
+- [Deployment](#deployment)
+- [Development](#development)
+- [MNEE integration](#mnee-integration)
+- [Contract Behavior](#contract-behavior)
+- [Examples & common flows](#examples--common-flows)
+- [Security & production notes](#security--production-notes)
+- [License](#license)
+
 ---
 
 ## TL;DR
