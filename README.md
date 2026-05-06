@@ -13,8 +13,6 @@
 
 ---
 
----
-
 **Implemented by [Cuniro](https://Cuniro.vercel.app) on Sepolia testnet. [go to Cuniro Repository->](https://github.com/giantgun/Cuniro)**
 
 **EscrowManager is a simple, non‑custodial escrow contract built to work seamlessly with the MNEE USD‑backed ERC20 (or any ERC20 token).** This repository includes mainnet-friendly scripts and facilities for working with MNEE in development, testing and production.
