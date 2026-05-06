@@ -1,5 +1,20 @@
 # EscrowManager: ERC20 MNEE based Escrow(mainnet-ready) 🚀
 
+🎥 **Demo Video:**  
+<br/>
+<br/>
+<div align="center">
+  <a href="https://youtu.be/HXsiokSswTQ">
+    <img src="https://img.youtube.com/vi/HXsiokSswTQ/maxresdefault.jpg" alt="BareBtc Demo" width="90%" />
+  </a>
+</div>
+<br/>
+<br/>
+
+---
+
+---
+
 **Implemented by [Cuniro](https://Cuniro.vercel.app) on Sepolia testnet. [go to Cuniro Repository->](https://github.com/giantgun/Cuniro)**
 
 **EscrowManager is a simple, non‑custodial escrow contract built to work seamlessly with the MNEE USD‑backed ERC20 (or any ERC20 token).** This repository includes mainnet-friendly scripts and facilities for working with MNEE in development, testing and production.
